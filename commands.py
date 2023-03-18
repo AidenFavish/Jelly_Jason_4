@@ -2,6 +2,8 @@ import json
 import discord
 import datetime
 import asyncio
+import channels
+import roles
 
 
 async def custom_commands(message, client):
@@ -79,7 +81,7 @@ async def custom_commands(message, client):
 
 
 async def statistics(client):
-    counterC = client.get_channel(958155533955780659)
+    counterC = client.get_channel(channels.CONTROL_PANEL)
     with open("storage.json", "r") as j:
         data = json.load(j)
     messageBoard = counterC.get_partial_message("1051588395165548544")
@@ -101,7 +103,7 @@ async def statistics(client):
     counter = 1
     for i in data["MsgCounter"]:
         user = client.get_user(int(i))
-        if user == None:
+        if user is None:
             user = client.user
         block2 += "\n" + str(counter) + ". " + user.name + " -> " + str(data["MsgCounter"][i]) + " messages"
         counter += 1
@@ -111,7 +113,7 @@ async def statistics(client):
 
 
 async def log(message, client):
-    gml = client.get_channel(955166586090696734)
+    gml = client.get_channel(channels.MESSAGE_LOG)
     author = str(message.author.id)
     with open("storage.json", "r") as j:
         data = json.load(j)
@@ -134,7 +136,7 @@ async def log(message, client):
 
 
 async def stalker(client):
-    stalkerChannel = client.get_channel(954982395721949184)
+    stalkerChannel = client.get_channel(channels.STALKER_LOG)
     with open("storage.json", "r") as j:
         data = json.load(j)
     for i in stalkerChannel.guild.members:
@@ -147,3 +149,4 @@ async def stalker(client):
         json.dump(data, j)
     await asyncio.sleep(30)
     asyncio.create_task(stalker(client))
+
