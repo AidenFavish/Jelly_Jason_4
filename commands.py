@@ -137,14 +137,17 @@ async def log(message, client):
 
 async def stalker(client):
     stalkerChannel = client.get_channel(channels.STALKER_LOG)
+
     with open("storage.json", "r") as j:
         data = json.load(j)
+
     for i in stalkerChannel.guild.members:
         if str(i.id) not in data["Stalker"]:
             data["Stalker"][str(i.id)] = str(i.status)
         if data["Stalker"][str(i.id)] != str(i.status):
             data["Stalker"][str(i.id)] = str(i.status)
             await stalkerChannel.send(i.name + " is now " + str(i.status) + " at " + str(datetime.datetime.now()))
+
     with open("storage.json", "w") as j:
         json.dump(data, j)
     await asyncio.sleep(30)
