@@ -6,6 +6,7 @@ import json
 import commands
 import channels
 import roles
+import JasonGPT
 
 intents = discord.Intents.default()
 intents.members = True
@@ -33,7 +34,10 @@ async def on_ready():
 async def on_message(message):
     # Makes sure Jason doesn't read his own messages
     if message.author.id != client.user.id:
-        await commands.custom_commands(message, client)
+        if message.channel.id == channels.JASONGPT:
+            await message.channel.send(await JasonGPT.prompt(""))
+        else:
+            await commands.custom_commands(message, client)
 
         # Blacklists testing channel to prevent diluting of the grand message log
         if message.channel.id != channels.TESTING:
