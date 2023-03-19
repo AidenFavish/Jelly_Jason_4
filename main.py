@@ -35,7 +35,7 @@ async def on_message(message):
     # Makes sure Jason doesn't read his own messages
     if message.author.id != client.user.id:
         if message.channel.id == channels.JASONGPT:
-            await message.channel.send(await JasonGPT.prompt(message.content))
+            await JasonGPT.prompt(message)
         else:
             await commands.custom_commands(message, client)
 
